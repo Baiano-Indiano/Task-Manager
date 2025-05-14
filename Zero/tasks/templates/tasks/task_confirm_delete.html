@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Confirmar Exclusão</title>
+</head>
+<body>
+    <h2>Confirmar Exclusão</h2>
+    <p>Tem certeza que deseja excluir "{{ task.title }}"?</p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit">Sim, excluir</button>
+        <a href="{% url 'task_list' %}">Cancelar</a>
+    </form>
+</body>
+</html>

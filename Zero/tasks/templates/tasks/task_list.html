@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Lista de Tarefas</title>
+</head>
+<body>
+    <h1>Lista de Tarefas</h1>
+    <a href="{% url 'task_create' %}">Nova Tarefa</a>
+    <ul>
+        {% for task in tasks %}
+            <li>
+                {{ task.title }} - {{ task.get_status_display }}
+                [<a href="{% url 'task_update' task.id %}">Editar</a>]
+                [<a href="{% url 'task_delete' task.id %}">Excluir</a>]
+            </li>
+        {% empty %}
+            <li>Nenhuma tarefa cadastrada.</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

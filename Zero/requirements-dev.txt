@@ -1,0 +1,5 @@
+-r requirements.txt
+pylint-django==2.5.5
+pytest==8.2.0
+pytest-django==4.8.0
+coverage==7.6.0

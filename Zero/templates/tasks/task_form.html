@@ -1,0 +1,181 @@
+{% extends 'base.html' %}
+
+{% block title %}{% if form.instance.pk %}Editar Tarefa{% else %}Nova Tarefa{% endif %}{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+        <div class="card">
+            <div class="card-header">
+                <h2 class="h5 mb-0">
+                    {% if form.instance.pk %}
+                        <i class="bi bi-pencil-square me-2"></i>Editar Tarefa
+                    {% else %}
+                        <i class="bi bi-plus-circle me-2"></i>Nova Tarefa
+                    {% endif %}
+                </h2>
+            </div>
+            <div class="card-body">
+                <form method="post" class="needs-validation" novalidate>
+                    {% csrf_token %}
+                    
+                    {% if form.non_field_errors %}
+                        <div class="alert alert-danger">
+                            {% for error in form.non_field_errors %}
+                                {{ error }}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                    
+                    <div class="mb-3">
+                        <label for="{{ form.title.id_for_label }}" class="form-label">
+                            {{ form.title.label }}
+                            {% if form.title.field.required %}<span class="text-danger">*</span>{% endif %}
+                        </label>
+                        {{ form.title }}
+                        {% if form.title.errors %}
+                            <div class="invalid-feedback d-block">
+                                {{ form.title.errors.0 }}
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="{{ form.description.id_for_label }}" class="form-label">
+                            {{ form.description.label }}
+                            {% if form.description.field.required %}<span class="text-danger">*</span>{% endif %}
+                        </label>
+                        {{ form.description }}
+                        {% if form.description.errors %}
+                            <div class="invalid-feedback d-block">
+                                {{ form.description.errors.0 }}
+                            </div>
+                        {% endif %}
+                        <div class="form-text">
+                            Forneça detalhes sobre a tarefa. Você pode usar formatação básica com quebras de linha.
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="{{ form.status.id_for_label }}" class="form-label">
+                            {{ form.status.label }}
+                            {% if form.status.field.required %}<span class="text-danger">*</span>{% endif %}
+                        </label>
+                        {{ form.status }}
+                        {% if form.status.errors %}
+                            <div class="invalid-feedback d-block">
+                                {{ form.status.errors.0 }}
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="d-flex justify-content-between mt-4">
+                        <a href="{% url 'tasks:task_list' %}" class="btn btn-outline-secondary">
+                            <i class="bi bi-arrow-left me-1"></i>Cancelar
+                        </a>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-save me-1"></i>Salvar
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% block extra_js %}
+<script>
+// Adiciona classes do Bootstrap aos campos do formulário
+(function() {
+    'use strict';
+    
+    // Adiciona a classe 'form-control' a todos os inputs e textareas
+    const inputs = document.querySelectorAll('input:not([type="checkbox"]):not([type="radio"]), textarea, select');
+    inputs.forEach(input => {
+        input.classList.add('form-control');
+    });
+    
+    // Adiciona a classe 'form-check-input' a checkboxes e radios
+    const checkboxes = document.querySelectorAll('input[type="checkbox"], input[type="radio"]');
+    checkboxes.forEach(checkbox => {
+        checkbox.classList.add('form-check-input');
+    });
+    
+    // Adiciona a classe 'form-select' a selects
+    const selects = document.querySelectorAll('select');
+    selects.forEach(select => {
+        select.classList.add('form-select');
+    });
+    
+    // Adiciona a classe 'form-label' a todas as labels
+    const labels = document.querySelectorAll('label');
+    labels.forEach(label => {
+        label.classList.add('form-label');
+    });
+    
+    // Adiciona validação do formulário
+    const forms = document.querySelectorAll('.needs-validation');
+    Array.from(forms).forEach(form => {
+        form.addEventListener('submit', event => {
+            if (!form.checkValidity()) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+            form.classList.add('was-validated');
+        }, false);
+    });
+})();
+</script>
+{% endblock %}
+
+<style>
+/* Estilos específicos para o formulário */
+.card {
+    border: none;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.05);
+}
+
+.card-header {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+textarea.form-control {
+    min-height: 120px;
+    resize: vertical;
+}
+
+.was-validated .form-control:invalid, 
+.was-validated .form-select:invalid,
+.form-control.is-invalid,
+.form-select.is-invalid {
+    border-color: #dc3545;
+}
+
+.was-validated .form-control:valid, 
+.was-validated .form-select:valid,
+.form-control.is-valid,
+.form-select.is-valid {
+    border-color: #198754;
+}
+
+.invalid-feedback {
+    display: none;
+    width: 100%;
+    margin-top: 0.25rem;
+    font-size: 0.875em;
+    color: #dc3545;
+}
+
+.was-validated .form-control:invalid ~ .invalid-feedback,
+.was-validated .form-control:invalid ~ .invalid-tooltip,
+.form-control.is-invalid ~ .invalid-feedback,
+.form-control.is-invalid ~ .invalid-tooltip,
+.was-validated .form-select:invalid ~ .invalid-feedback,
+.was-validated .form-select:invalid ~ .invalid-tooltip,
+.form-select.is-invalid ~ .invalid-feedback,
+.form-select.is-invalid ~ .invalid-tooltip {
+    display: block;
+}
+</style>
+{% endblock %}

@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% if form.instance.pk %}Editar{% else %}Nova{% endif %} Tarefa</title>
+</head>
+<body>
+    <h2>{% if form.instance.pk %}Editar{% else %}Nova{% endif %} Tarefa</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Salvar</button>
+    </form>
+    <a href="{% url 'task_list' %}">Cancelar</a>
+</body>
+</html>

@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6 col-lg-4">
+        <div class="card shadow">
+            <div class="card-header bg-primary text-white text-center">
+                <h2 class="h4 mb-0">
+                    <i class="bi bi-box-arrow-in-right me-2"></i>Entrar
+                </h2>
+            </div>
+            <div class="card-body p-4">
+                {% if form.errors %}
+                    <div class="alert alert-danger">
+                        Seu nome de usuário e senha não coincidem. Por favor, tente novamente.
+                    </div>
+                {% endif %}
+
+                {% if next %}
+                    {% if user.is_authenticated %}
+                        <div class="alert alert-warning">
+                            Sua conta não tem acesso a esta página. Para prosseguir, faça login com uma conta que tenha acesso.
+                        </div>
+                    {% else %}
+                        <div class="alert alert-info">
+                            Por favor, faça login para acessar esta página.
+                        </div>
+                    {% endif %}
+                {% endif %}
+
+                <form method="post" action="{% url 'login' %}" class="needs-validation" novalidate>
+                    {% csrf_token %}
+                    
+                    <div class="mb-3">
+                        <label for="id_username" class="form-label">Nome de usuário</label>
+                        <input type="text" name="username" class="form-control" id="id_username" required>
+                        <div class="invalid-feedback">
+                            Por favor, insira seu nome de usuário.
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="id_password" class="form-label">Senha</label>
+                        <input type="password" name="password" class="form-control" id="id_password" required>
+                        <div class="invalid-feedback">
+                            Por favor, insira sua senha.
+                        </div>
+                    </div>
+                    
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-box-arrow-in-right me-1"></i>Entrar
+                        </button>
+                        <input type="hidden" name="next" value="{{ next }}">
+                    </div>
+                </form>
+                
+                <hr class="my-4">
+                
+                <p class="text-center mb-0">
+                    <a href="{% url 'password_reset' %}" class="text-decoration-none">
+                        <i class="bi bi-question-circle me-1"></i>Esqueceu sua senha?
+                    </a>
+                </p>
+                
+                {% if not user.is_authenticated %}
+                    <p class="text-center mt-3 mb-0">
+                        <a href="{% url 'admin:index' %}" class="text-decoration-none">
+                            <i class="bi bi-person-plus me-1"></i>Acessar painel de administração
+                        </a>
+                    </p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+{% block extra_js %}
+<script>
+// Validação do formulário de login
+(function() {
+    'use strict';
+    
+    // Seleciona todos os formulários com a classe 'needs-validation'
+    var forms = document.querySelectorAll('.needs-validation');
+    
+    // Itera sobre os formulários e previne o envio se houver campos inválidos
+    Array.prototype.slice.call(forms).forEach(function(form) {
+        form.addEventListener('submit', function(event) {
+            if (!form.checkValidity()) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+            
+            form.classList.add('was-validated');
+        }, false);
+    });
+})();
+</script>
+{% endblock %}
+
+{% endblock %}
